@@ -1,136 +1,56 @@
 import React from 'react'
 import Item from "./Item"
 import Data from "../database/Data"
-import SortAZButton from "./SortAZButton"
 import Search from "./Search"
+import { filterCarsByName, sortCarsByNameAsc, sortCarsByNameDesc } from '../utils';
 
 class Main extends React.Component {
+  constructor() {
+    super()
 
-    constructor() {
-
-        super()
-        this.state = {
-
-            data: Data,
-            sortedAZ: false,
-
-        }
-
-        this.sortAZ = this.sortAZ.bind(this)
-        this.search = this.search.bind(this)
-
+    this.state = {
+      data: Data,
+      sortedAZ: false,
+      searchTerm: null,
     }
 
-    sortAZ(list) {
+    this.sortData = this.sortData.bind(this)
+    this.search = this.search.bind(this)
+  }
 
-        if (this.state.sortedAZ === false) {
+  sortData(list) {
+    this.setState(prevState => {
+      const sortingFunction = prevState.sortedAZ === false ? sortCarsByNameAsc : sortCarsByNameDesc;
+      const sortedData = prevState.data.sort(sortingFunction);
 
-        this.setState(prevState => {
+      return {
+        data: sortedData,
+        sortedAZ: !prevState.sortedAZ,
+      };
+    });
+  }
 
-            const dataListAZ = prevState.data.sort(function (a, b) {
+  search(searchTerm) {
+    this.setState({ searchTerm });
+  }
 
-                let nameA = a.name.toUpperCase();
-    
-                let nameB = b.name.toUpperCase();
-    
-                if (nameA < nameB) {
-    
-                    return -1;
-                }
-                if (nameA > nameB) {
-    
-                    return 1;
-                }
-    
-                return 0;
-    
-            });
+  render() {
+    const filteredList = filterCarsByName(this.state.data, this.state.searchTerm);
 
-            return {
+    const dataList = filteredList.map((item) => {
+      return <Item onClick={(item) => console.log(item)} name={item.name} model={item.model} key={item.id} />
+    });
 
-                data: dataListAZ,
-                sortedAZ: true
+    let sortButtonText = this.state.sortedAZ === false ? "A-Z" : "Z-A";
 
-            }
-
-        })
-
-    } else {
-
-        this.setState(prevState => {
-
-            const dataListAZ = prevState.data.sort(function (a, b) {
-
-                let nameA = a.name.toUpperCase();
-    
-                let nameB = b.name.toUpperCase();
-    
-                if (nameA < nameB) {
-    
-                    return 1;
-                }
-                if (nameA > nameB) {
-    
-                    return -1;
-                }
-    
-                return 0;
-
-            })
-
-            return {
-
-            data: dataListAZ,
-            sortedAZ: false
-
-            }
-
-        })
-
-    }
-
-    }
-
-    search(term) {
-
-        this.setState(prevState => {
-
-            const filteredList = prevState.data.filter(item => {
-
-                return item.name.toLowerCase().includes(term.toLowerCase())
-
-            })
-
-            return {
-
-                data: filteredList,
-
-            }
-
-        })
-
-    }
-
-    render() {
-
-        const dataList = this.state.data.map((item) => {
-
-        return <Item name={item.name} model={item.model} key={item.id} />
-
-        })
-
-        return(
-
-            <main className="main">
-                {dataList}
-                <SortAZButton onClick={this.sortAZ}/>
-                <Search onKeyDown={this.search}/>
-            </main>
-
-        )
-
-    }
-
+    return(
+      <main className="main">
+        {dataList}
+        <button className="btn sort-az" onClick={() => this.sortData(this.state.data)}>{sortButtonText}</button>
+        <input type="text" placeholder="Search" onKeyUp={(e) => this.search(e.target.value)}/>
+      </main>
+    )
+  }
 }
 
 export default Main
