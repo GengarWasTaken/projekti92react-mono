@@ -1,0 +1,29 @@
+body {
+
+    display: grid;
+    place-items: center;
+
+    height: 100vh;
+
+}
+
+.App {
+
+    height: auto;
+    width: 450px;
+  
+    border: 1px solid black;
+  
+  }
+
+  .item {
+
+    border-bottom: 1px solid black;
+
+  }
+
+  .item p {
+
+    padding: 2px;
+
+  }
