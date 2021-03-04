@@ -1,6 +1,7 @@
 import React from 'react'
 import Item from "./Item"
 import Data from "../database/Data"
+import Pagination from "./Pagination"
 import Search from "./Search"
 import { filterCarsByName, sortCarsByNameAsc, sortCarsByNameDesc } from '../utils';
 
@@ -12,6 +13,9 @@ class Main extends React.Component {
       data: Data,
       sortedAZ: false,
       searchTerm: null,
+      currentPage: 1,
+      setCurrentPage: 1,
+      carsPerPage: 5,
     }
 
     this.sortData = this.sortData.bind(this)
@@ -35,7 +39,12 @@ class Main extends React.Component {
   }
 
   render() {
-    const filteredList = filterCarsByName(this.state.data, this.state.searchTerm);
+
+    const indexOfLastCar = this.state.currentPage * this.state.carsPerPage;
+    const indexOfFirstCar = indexOfLastCar - this.state.carsPerPage;
+    const currentCars = this.state.data.slice(indexOfFirstCar, indexOfLastCar);
+    
+    const filteredList = filterCarsByName(currentCars, this.state.searchTerm);
 
     const dataList = filteredList.map((item) => {
       return <Item onClick={(item) => console.log(item)} name={item.name} model={item.model} key={item.id} />
@@ -43,11 +52,14 @@ class Main extends React.Component {
 
     let sortButtonText = this.state.sortedAZ === false ? "A-Z" : "Z-A";
 
+    const paginate = pageNumber => this.state.setCurrentPage(pageNumber);
+
     return(
       <main className="main">
         {dataList}
         <button className="btn sort-az" onClick={() => this.sortData(this.state.data)}>{sortButtonText}</button>
         <input type="text" placeholder="Search" onKeyUp={(e) => this.search(e.target.value)}/>
+        <Pagination carsPerPage={this.state.carsPerPage} totalCars={this.state.data.length} paginate={paginate}/>
       </main>
     )
   }
