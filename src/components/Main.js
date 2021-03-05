@@ -20,7 +20,12 @@ class Main extends React.Component {
 
     this.sortData = this.sortData.bind(this)
     this.search = this.search.bind(this)
+/*     this.paginate = this.paginate.bind(this) */
   }
+
+/*   paginate(pageNumber) {
+    this.setState.setCurrentPage(pageNumber);
+  } */
 
   sortData(list) {
     this.setState(prevState => {
@@ -52,7 +57,9 @@ class Main extends React.Component {
 
     let sortButtonText = this.state.sortedAZ === false ? "A-Z" : "Z-A";
 
-    const paginate = pageNumber => this.state.setCurrentPage(pageNumber);
+    const paginate = (pageNumber) => {
+      this.setState({currentPage: pageNumber})
+    }
 
     return(
       <main className="main">
