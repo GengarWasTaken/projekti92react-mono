@@ -1,9 +1,12 @@
-import React from 'react'
-import Item from "./Item"
-import Data from "../database/Data"
-import Pagination from "./Pagination"
-import Search from "./Search"
-import { filterCarsByName, sortCarsByNameAsc, sortCarsByNameDesc } from '../utils';
+import React from "react";
+import Item from "./Item";
+import Data from "../database/Data";
+import Pagination from "./Pagination";
+import {
+  filterCarsByName,
+  sortCarsByNameAsc,
+  sortCarsByNameDesc,
+} from "../utils";
 
 function paginateCarList(data, currentPage, itemsPerPage) {
   const indexOfLastCar = currentPage * itemsPerPage;
@@ -13,7 +16,7 @@ function paginateCarList(data, currentPage, itemsPerPage) {
 
 class Main extends React.Component {
   constructor() {
-    super()
+    super();
 
     this.state = {
       data: paginateCarList(Data, 1, 5),
@@ -22,7 +25,7 @@ class Main extends React.Component {
       currentPage: 1,
       carsPerPage: 5,
       totalItems: Data.length,
-    }
+    };
 
     this.sortData = this.sortData.bind(this);
     this.search = this.search.bind(this);
@@ -30,8 +33,9 @@ class Main extends React.Component {
   }
 
   sortData(list) {
-    this.setState(prevState => {
-      const sortingFunction = prevState.sortedAZ === false ? sortCarsByNameAsc : sortCarsByNameDesc;
+    this.setState((prevState) => {
+      const sortingFunction =
+        prevState.sortedAZ === false ? sortCarsByNameAsc : sortCarsByNameDesc;
       const sortedData = prevState.data.sort(sortingFunction);
 
       return {
@@ -45,7 +49,11 @@ class Main extends React.Component {
     const filteredList = filterCarsByName(Data, searchTerm);
 
     this.setState((prevState) => ({
-      data: paginateCarList(filteredList, prevState.currentPage, prevState.carsPerPage),
+      data: paginateCarList(
+        filteredList,
+        prevState.currentPage,
+        prevState.carsPerPage
+      ),
       totalItems: filteredList.length,
       searchTerm,
     }));
@@ -62,20 +70,41 @@ class Main extends React.Component {
 
   render() {
     const dataList = this.state.data.map((item) => {
-      return <Item name={item.name} model={item.model} key={item.id} />
+      return (
+        <Item
+          name={item.name}
+          model={item.model}
+          key={item.id}
+          isCollapsed={this.state.isCollapsed}
+          collapseItem={this.collapseItem}
+        />
+      );
     });
 
     let sortButtonText = this.state.sortedAZ === false ? "A-Z" : "Z-A";
 
-    return(
+    return (
       <main className="main">
         {dataList}
-        <button className="btn sort-az" onClick={() => this.sortData(this.state.data)}>{sortButtonText}</button>
-        <input type="text" placeholder="Search" onKeyUp={(e) => this.search(e.target.value)}/>
-        <Pagination carsPerPage={this.state.carsPerPage} totalCars={this.state.totalItems} paginate={this.paginate}/>
+        <button
+          className="btn sort-az"
+          onClick={() => this.sortData(this.state.data)}
+        >
+          {sortButtonText}
+        </button>
+        <input
+          type="text"
+          placeholder="Search"
+          onKeyUp={(e) => this.search(e.target.value)}
+        />
+        <Pagination
+          carsPerPage={this.state.carsPerPage}
+          totalCars={this.state.totalItems}
+          paginate={this.paginate}
+        />
       </main>
-    )
+    );
   }
 }
 
-export default Main
+export default Main;

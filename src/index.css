@@ -20,12 +20,31 @@ body {
 
     border-bottom: 1px solid black;
 
+    position: relative;
+
   }
 
   .item p {
 
     padding: 2px;
 
+  }
+
+  .collapse {
+    position: absolute;
+    top: -20px;
+    right: 15px;
+
+    border: 1px solid black;
+
+    height: 20px;
+    width: 20px;
+
+    text-align: center;
+
+    font-weight: bold;
+
+    cursor: pointer;
   }
 
   .pagination{
