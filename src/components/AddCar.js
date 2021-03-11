@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 function AddCar({ onClose, onSubmit }) {
-  let carName;
-  let carModel;
+  const [carName, setCarName] = useState();
+  const [carModel, setCarModel] = useState();
+
   return (
     <div className="add-car-screen">
       <button className="cancel-btn" onClick={onClose}>
@@ -14,7 +15,7 @@ function AddCar({ onClose, onSubmit }) {
           type="text"
           placeholder="Enter name"
           name="nameOfCar"
-          onChange={(e) => (carName = e.target.value)}
+          onChange={(e) => setCarName(e.target.value)}
           required
         />
         <input
@@ -22,7 +23,7 @@ function AddCar({ onClose, onSubmit }) {
           type="text"
           placeholder="Enter model"
           name="modelOfCar"
-          onChange={(e) => (carModel = e.target.value)}
+          onChange={(e) => setCarModel(e.target.value)}
           required
         />
       </form>

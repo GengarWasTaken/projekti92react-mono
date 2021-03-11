@@ -74,10 +74,10 @@ class Main extends React.Component {
   handleSubmit(carName, carModel) {
     this.setState((prevState) => {
       let newCar = { name: carName, model: carModel };
-      let newList = [...prevState.data, newCar];
+      let newCarList = [...prevState.data, newCar];
 
       return {
-        data: newList,
+        data: newCarList,
       };
     });
   }
