@@ -3,7 +3,7 @@ import Item from "./Item";
 import Data from "../database/Data";
 import Pagination from "./Pagination";
 import Header from "./Header";
-/* import { useAddCarForm } from "./useAddCarForm"; */
+
 import {
   filterCarsByName,
   sortCarsByNameAsc,
@@ -72,18 +72,13 @@ class Main extends React.Component {
   }
 
   handleSubmit(carName, carModel) {
-    this.setState((prevState) => {
-      let newCar = { name: carName, model: carModel };
-      let newCarList = [...prevState.data, newCar];
-
-      return {
-        data: newCarList,
-      };
-    });
+    const newCar = { name: carName, model: carModel };
+    Data.unshift(newCar);
+    this.paginate(1);
+    this.search("");
   }
 
   render() {
-    //AKO USPIJEŠ DODATI NOVI AUTO PREKO ADDCAR, PROMIJENI OVO DOLJE U KEY={INDEX IZ DATA ARRAY-A} DA NE MORAŠ SAM DODAVATI NEKAKAV KEY
     const dataList = this.state.data.map((item, index) => {
       return <Item name={item.name} model={item.model} key={index} />;
     });
