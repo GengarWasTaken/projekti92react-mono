@@ -1,9 +1,9 @@
-import Main from "./components/Main";
+import FilterableVehicleTable from "./modules/main/FilterableVehicleTable";
 
 function App() {
   return (
     <div className="App">
-      <Main />
+      <FilterableVehicleTable />
     </div>
   );
 }

@@ -90,7 +90,7 @@ class Main extends React.Component {
         <Header onCarAdded={this.handleSubmit} />
         <main className="main">
           {dataList}
-          <button
+          {/*           <button
             className="btn sort-az"
             onClick={() => this.sortData(this.state.data)}
           >
@@ -105,7 +105,8 @@ class Main extends React.Component {
             carsPerPage={this.state.carsPerPage}
             totalCars={this.state.totalItems}
             paginate={this.paginate}
-          />
+          /> */}
+          <Footer />
         </main>
       </>
     );
