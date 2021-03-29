@@ -1,12 +1,11 @@
-import React from 'react'
+import React from "react";
 
-function SortAZButton(props) {
-
-    return (
-
-        <button className="btn sort-az" onClick={() => props.onClick(props.data)}>A-Z</button>
-
-    )
+function SortAZButton({ isSorted, onListSorted }) {
+  return (
+    <button className="btn sort-az" onClick={onListSorted}>
+      {isSorted}
+    </button>
+  );
 }
 
-export default SortAZButton
+export default SortAZButton;

@@ -1,8 +1,12 @@
 import React from "react";
 
-const Pagination = ({ carsPerPage, totalCars, paginate }) => {
+const Pagination = ({ paginationData }) => {
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(totalCars / carsPerPage); i++) {
+  for (
+    let i = 1;
+    i <= Math.ceil(paginationData.totalCars / paginationData.carsPerPage);
+    i++
+  ) {
     pageNumbers.push(i);
   }
 
@@ -11,7 +15,11 @@ const Pagination = ({ carsPerPage, totalCars, paginate }) => {
       <ul className="pagination">
         {pageNumbers.map((number) => (
           <li key={number}>
-            <a onClick={() => paginate(number)} href="!#" className="page-link">
+            <a
+              onClick={() => paginationData.paginate(number)}
+              href="!#"
+              className="page-link"
+            >
               {number}
             </a>
           </li>

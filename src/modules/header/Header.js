@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AddCar from "./AddCar";
+import AddCarForm from "./components/AddCarForm";
 
 function Header({ onCarAdded }) {
   const [isBeingAdded, setIsBeingAdded] = useState(false);
@@ -15,7 +15,7 @@ function Header({ onCarAdded }) {
       </div>
       <div className="add-edit-hud">
         {isBeingAdded ? (
-          <AddCar
+          <AddCarForm
             onSubmit={onCarAdded}
             onClose={() => setIsBeingAdded(false)}
           />

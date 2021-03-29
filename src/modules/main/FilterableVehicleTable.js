@@ -1,116 +1,34 @@
 import React from "react";
-import Item from "./Item";
-import Data from "../database/Data";
-import Pagination from "./Pagination";
-import Header from "./Header";
+import Item from "./components/Item";
+import Header from "../header/Header";
+import Footer from "../footer/Footer";
+import { observer } from "mobx-react";
 
-import {
-  filterCarsByName,
-  sortCarsByNameAsc,
-  sortCarsByNameDesc,
-} from "../utils";
+const FilterableVehicleTable = observer(({ store }) => {
+  const dataList = store.data.map((item) => {
+    return <Item name={item.name} model={item.model} key={item.id} />;
+  });
 
-function paginateCarList(data, currentPage, itemsPerPage) {
-  const indexOfLastCar = currentPage * itemsPerPage;
-  const indexOfFirstCar = indexOfLastCar - itemsPerPage;
-  return data.slice(indexOfFirstCar, indexOfLastCar);
-}
+  let sortButtonText = store.sortedAZ === false ? "A-Z" : "Z-A";
 
-class Main extends React.Component {
-  constructor() {
-    super();
+  let paginationData = {
+    carsPerPage: store.carsPerPage,
+    totalCars: store.totalItems,
+    paginate: store.paginate,
+  };
 
-    this.state = {
-      data: paginateCarList(Data, 1, 5),
-      sortedAZ: false,
-      searchTerm: null,
-      currentPage: 1,
-      carsPerPage: 5,
-      totalItems: Data.length,
-    };
+  return (
+    <>
+      <Header onCarAdded={store.handleSubmit} />
+      <main className="main">{dataList}</main>
+      <Footer
+        isSorted={sortButtonText}
+        onListSorted={() => store.sortData()}
+        onSearch={(searchTerm) => store.search(searchTerm)}
+        paginationData={paginationData}
+      />
+    </>
+  );
+});
 
-    this.sortData = this.sortData.bind(this);
-    this.search = this.search.bind(this);
-    this.paginate = this.paginate.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  sortData(list) {
-    this.setState((prevState) => {
-      const sortingFunction =
-        prevState.sortedAZ === false ? sortCarsByNameAsc : sortCarsByNameDesc;
-      const sortedData = prevState.data.sort(sortingFunction);
-
-      return {
-        data: sortedData,
-        sortedAZ: !prevState.sortedAZ,
-      };
-    });
-  }
-
-  search(searchTerm) {
-    const filteredList = filterCarsByName(Data, searchTerm);
-
-    this.setState((prevState) => ({
-      data: paginateCarList(
-        filteredList,
-        prevState.currentPage,
-        prevState.carsPerPage
-      ),
-      totalItems: filteredList.length,
-      searchTerm,
-    }));
-  }
-
-  paginate(pageNumber) {
-    const filteredList = filterCarsByName(Data, this.state.searchTerm);
-
-    this.setState((prevState) => ({
-      currentPage: pageNumber,
-      data: paginateCarList(filteredList, pageNumber, prevState.carsPerPage),
-    }));
-  }
-
-  handleSubmit(carName, carModel) {
-    const newCar = { name: carName, model: carModel };
-    Data.unshift(newCar);
-    this.paginate(1);
-    this.search("");
-  }
-
-  render() {
-    const dataList = this.state.data.map((item, index) => {
-      return <Item name={item.name} model={item.model} key={index} />;
-    });
-
-    let sortButtonText = this.state.sortedAZ === false ? "A-Z" : "Z-A";
-
-    return (
-      <>
-        <Header onCarAdded={this.handleSubmit} />
-        <main className="main">
-          {dataList}
-          {/*           <button
-            className="btn sort-az"
-            onClick={() => this.sortData(this.state.data)}
-          >
-            {sortButtonText}
-          </button>
-          <input
-            type="text"
-            placeholder="Search"
-            onKeyUp={(e) => this.search(e.target.value)}
-          />
-          <Pagination
-            carsPerPage={this.state.carsPerPage}
-            totalCars={this.state.totalItems}
-            paginate={this.paginate}
-          /> */}
-          <Footer />
-        </main>
-      </>
-    );
-  }
-}
-
-export default Main;
+export default FilterableVehicleTable;

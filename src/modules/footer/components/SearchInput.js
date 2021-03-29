@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
 
-function Search(props) {
-    return (
-        <input type="text" placeholder="Search" onKeyDown={(e) => props.onKeyUp(e.target.value)}/>
-    )
+function Search({ onSearch }) {
+  return (
+    <input
+      type="text"
+      placeholder="Search"
+      onKeyUp={(e) => onSearch(e.target.value)}
+    />
+  );
 }
 
-export default Search
+export default Search;

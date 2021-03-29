@@ -1,9 +1,10 @@
 import FilterableVehicleTable from "./modules/main/FilterableVehicleTable";
+import { store } from "./modules/store/CarsStore";
 
 function App() {
   return (
     <div className="App">
-      <FilterableVehicleTable />
+      <FilterableVehicleTable store={store} />
     </div>
   );
 }
