@@ -1,25 +1,14 @@
 import React from "react";
+import { observer } from "mobx-react";
 
-const Pagination = ({ paginationData }) => {
-  const pageNumbers = [];
-  for (
-    let i = 1;
-    i <= Math.ceil(paginationData.totalCars / paginationData.carsPerPage);
-    i++
-  ) {
-    pageNumbers.push(i);
-  }
-
+const Pagination = observer(({ pages, paginate }) => {
+  console.log(pages());
   return (
     <nav>
       <ul className="pagination">
-        {pageNumbers.map((number) => (
+        {pages().map((number) => (
           <li key={number}>
-            <a
-              onClick={() => paginationData.paginate(number)}
-              href="!#"
-              className="page-link"
-            >
+            <a onClick={() => paginate(number)} href="!#" className="page-link">
               {number}
             </a>
           </li>
@@ -27,6 +16,6 @@ const Pagination = ({ paginationData }) => {
       </ul>
     </nav>
   );
-};
+});
 
 export default Pagination;

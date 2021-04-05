@@ -7,11 +7,10 @@ function Header({ onCarAdded }) {
   return (
     <header>
       <div className="menu">
-        <p>Add {/* or edit  */}vehicles</p>
+        <p>Add vehicles</p>
         <button className="add-car-btn" onClick={() => setIsBeingAdded(true)}>
           Add
         </button>
-        {/* <button className="edit-car-btn">Edit</button> */}
       </div>
       <div className="add-edit-hud">
         {isBeingAdded ? (

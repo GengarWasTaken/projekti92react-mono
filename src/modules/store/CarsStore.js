@@ -16,7 +16,6 @@ class CarsStore {
     this.currentPage = 1;
     this.carsPerPage = 5;
     this.totalItems = Data.length;
-
     makeAutoObservable(this, {
       data: observable,
       totalItems: observable,
@@ -31,6 +30,7 @@ class CarsStore {
       currentPage: observable,
       carsPerPage: observable,
       paginate: action,
+      paginateCarList: action,
     });
   }
 
@@ -41,8 +41,13 @@ class CarsStore {
   }
 
   handleSubmit(carName, carModel) {
-    const newCar = { name: carName, model: carModel, id: this.data.length };
-    this.data.unshift(newCar);
+    const newCarId = Data.length;
+    const newCar = {
+      name: carName,
+      model: carModel,
+      id: newCarId,
+    };
+    Data.unshift(newCar);
     this.paginate(1);
     this.search("");
   }
@@ -75,6 +80,12 @@ class CarsStore {
       pageNumber,
       this.carsPerPage
     );
+  }
+
+  get pageNumbers() {
+    return new Array(Math.floor(this.totalItems / this.carsPerPage))
+      .fill(0)
+      .map((_, idx) => idx + 1);
   }
 }
 

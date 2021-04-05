@@ -11,21 +11,19 @@ const FilterableVehicleTable = observer(({ store }) => {
 
   let sortButtonText = store.sortedAZ === false ? "A-Z" : "Z-A";
 
-  let paginationData = {
-    carsPerPage: store.carsPerPage,
-    totalCars: store.totalItems,
-    paginate: store.paginate,
-  };
+  const pages = () => store.pageNumbers;
+  const paginate = (num) => store.paginate(num);
 
   return (
     <>
-      <Header onCarAdded={store.handleSubmit} />
+      <Header onCarAdded={store.handleSubmit.bind(store)} />
       <main className="main">{dataList}</main>
       <Footer
         isSorted={sortButtonText}
         onListSorted={() => store.sortData()}
         onSearch={(searchTerm) => store.search(searchTerm)}
-        paginationData={paginationData}
+        pages={pages}
+        paginate={paginate}
       />
     </>
   );

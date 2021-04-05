@@ -1,15 +1,35 @@
 import React, { useState } from "react";
 
 function Item({ name, model }) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isBeingEdited, setIsBeingEdited] = useState(false);
+  const [carName, setCarName] = useState("");
+  const [carModel, setCarModel] = useState("");
   return (
-    <div className="item">
-      <p className="name">{isCollapsed ? "" : `Name:${name}`}</p>
-      <p className="collapse" onClick={(e) => setIsCollapsed(!isCollapsed)}>
-        {isCollapsed ? "+" : "-"}
-      </p>
-      <p className="model">{isCollapsed ? "" : `Model:${model}`}</p>
-    </div>
+    <>
+      {isBeingEdited ? (
+        <div className="item-edit">
+          <input
+            type="text"
+            placeholder="Name:"
+            defaultValue={name}
+            onChange={(e) => setCarName(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Model:"
+            defaultValue={model}
+            onChange={(e) => setCarModel(e.target.value)}
+          />
+          <button onClick={() => setIsBeingEdited(false)}>Save</button>
+        </div>
+      ) : (
+        <div className="item">
+          <p className="name">{name}</p>
+          <p className="model">{model}</p>
+          <button onClick={() => setIsBeingEdited(true)}>Edit</button>
+        </div>
+      )}
+    </>
   );
 }
 
